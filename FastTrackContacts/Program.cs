@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using FastTrackContacts.Data;
 namespace FastTrackContacts
 {
     public class Program
@@ -5,6 +8,8 @@ namespace FastTrackContacts
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddDbContext<DatabaseContext>(options =>
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DatabaseContext") ?? throw new InvalidOperationException("Connection string 'DatabaseContext' not found.")));
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
