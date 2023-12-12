@@ -8,6 +8,9 @@ namespace FastTrackContacts
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+
             builder.Services.AddDbContext<DatabaseContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DatabaseContext") ?? throw new InvalidOperationException("Connection string 'DatabaseContext' not found.")));
 
@@ -15,6 +18,9 @@ namespace FastTrackContacts
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
+
+            // Map DateTime with Kind=UTC to postgreSQL type "timestamp without timezone"
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

@@ -46,6 +46,9 @@ namespace FastTrackContacts
         // GET: ContactListEntries/Create
         public IActionResult Create()
         {
+            //ViewData["CompanyName"] = "BuyNLarge";
+            ViewBag.CompanyName = "BuyNLarge";
+
             return View();
         }
 
